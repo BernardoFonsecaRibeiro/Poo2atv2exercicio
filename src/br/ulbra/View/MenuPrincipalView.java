@@ -14,14 +14,12 @@ public class MenuPrincipalView extends javax.swing.JDialog {
     /**
      * Creates new form MenuPrincipalView
      */
-    public MenuPrincipalView(java.awt.Frame parent, boolean modal) {
-        super(parent, modal);
+    public MenuPrincipalView() {
+        
         initComponents();
     }
 
-    MenuPrincipalView() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+   
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -61,6 +59,11 @@ public class MenuPrincipalView extends javax.swing.JDialog {
         jMenu1.setText("Cadastro");
 
         jMenuItem1.setText("Usuarios");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
         jMenu1.add(jMenuItem1);
 
         jMenuItem2.setText("Clientes");
@@ -108,6 +111,10 @@ public class MenuPrincipalView extends javax.swing.JDialog {
         // TODO add your handling code here:
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -138,7 +145,7 @@ public class MenuPrincipalView extends javax.swing.JDialog {
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                MenuPrincipalView dialog = new MenuPrincipalView(new javax.swing.JFrame(), true);
+                MenuPrincipalView dialog = new MenuPrincipalView();
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {

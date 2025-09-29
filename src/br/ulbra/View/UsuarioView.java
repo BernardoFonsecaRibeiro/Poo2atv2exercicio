@@ -164,7 +164,7 @@ public class UsuarioView extends javax.swing.JDialog {
                 {null, null, null, null}
             },
             new String [] {
-                "ID", "Nome", "login", "Ativo"
+                "ID", "Login", "Nome", "Ativo"
             }
         ));
         tblUsuario.addMouseListener(new java.awt.event.MouseAdapter() {

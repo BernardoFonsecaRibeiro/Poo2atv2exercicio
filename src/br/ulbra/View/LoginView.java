@@ -19,8 +19,8 @@ public class LoginView extends javax.swing.JDialog {
     /**
      * Creates new form LoginView
      */
-    public LoginView(java.awt.Frame parent, boolean modal) {
-        super(parent, modal);
+    public LoginView() {
+       
         initComponents();
     }
 
@@ -127,7 +127,7 @@ public class LoginView extends javax.swing.JDialog {
     }//GEN-LAST:event_txtLoginActionPerformed
 
     private void BtnEntrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnEntrarActionPerformed
-String login = txtLogin.getText();
+        String login = txtLogin.getText();
         String senha = txtSenha.getText(); // se txtSenha for JPasswordField
 
         if (login.isEmpty() || senha.isEmpty()) {
@@ -142,7 +142,8 @@ String login = txtLogin.getText();
             if (usuario != null) {
                 JOptionPane.showMessageDialog(this,
                         "Bem-vindo, " + usuario.getNome() + "!");
-                new MenuPrincipalView().setVisible(true);
+               MenuPrincipalView mp = new MenuPrincipalView();
+               mp.setVisible(true);
                 this.dispose(); // fecha a tela de login
 
             } else {
@@ -185,7 +186,7 @@ String login = txtLogin.getText();
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                LoginView dialog = new LoginView(new javax.swing.JFrame(), true);
+                LoginView dialog = new LoginView();
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {

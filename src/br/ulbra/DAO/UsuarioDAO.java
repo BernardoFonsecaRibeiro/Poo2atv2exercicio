@@ -15,23 +15,22 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JOptionPane;
 import org.mindrot.jbcrypt.BCrypt;
 
 /**
  *
  * @author aluno.saolucas
  */
+public class UsuarioDAO extends AbstractDAO implements CrudRepository<Usuario> {
 
- 
-
-public class UsuarioDAO extends AbstractDAO implements CrudRepository<Usuario>{
-
-     private String criptografarSenha(String senha) {
+    private String criptografarSenha(String senha) {
         return BCrypt.hashpw(senha, BCrypt.gensalt());
     }
+
     @Override
     public void salvar(Usuario u) throws SQLException {
-       String sql = "INSERT INTO tbusuario (nome, login, senha, ativo) VALUES (?, ?, ?,?)";
+        String sql = "INSERT INTO tbusuario (nome, login, senha, ativo) VALUES (?, ?, ?,?)";
         try (Connection con = getConnection();
                 PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             ps.setString(1, u.getNome());
@@ -52,7 +51,7 @@ public class UsuarioDAO extends AbstractDAO implements CrudRepository<Usuario>{
 
     @Override
     public Usuario buscarPorId(int id) throws SQLException {
-         String sql = "SELECT id, nome, login, senha, ativo FROM tbusuario WHERE id = ?";
+        String sql = "SELECT id, nome, login, senha, ativo FROM tbusuario WHERE id = ?";
         try (Connection con = getConnection();
                 PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, id);
@@ -73,48 +72,49 @@ public class UsuarioDAO extends AbstractDAO implements CrudRepository<Usuario>{
 
     @Override
     public List<Usuario> listar() throws SQLException {
-        String sql="select id, nome,login , ativo FROM tbusuario ORDER by id";
+        String sql = "select id, nome,login , ativo FROM tbusuario ORDER by id";
         List<Usuario> lista = new ArrayList<>();
-        try(Connection con = getConnection();  PreparedStatement ps = con.prepareStatement(sql); 
-                ResultSet rs= ps.executeQuery()){  //aqui mosrtra e não modifica
-             while(rs.next()){
+        try (Connection con = getConnection(); PreparedStatement ps = con.prepareStatement(sql);
+                ResultSet rs = ps.executeQuery()) {  //aqui mosrtra e não modifica
+            while (rs.next()) {
                 Usuario u = new Usuario(
-                rs.getInt("id"),
-                rs.getString("nome"),
-                rs.getString("login"),
-            //    rs.getString("senha"),
-                rs.getBoolean("ativo")
+                        rs.getInt("id"),
+                        rs.getString("login"),
+                        rs.getString("nome"),
+                        //    rs.getString("senha"),
+                        rs.getBoolean("ativo")
                 );
                 lista.add(u);
 
-             }
-             
+            }
+
         }
         return lista;
     }
 
     @Override
     public void atualizar(Usuario u) throws SQLException {
-        String sql="UPDATE tbusuario set nome= ?, login = ?, ativo =? where id=?";
-        try(Connection con= getConnection(); PreparedStatement ps = con.prepareStatement(sql)){
-            ps.setString(1,u.getNome());
-            ps.setString(2,u.getLogin());
-            ps.setBoolean(3,u.isAtivo());
-            ps.setInt(4,u.getId());
+        String sql = "UPDATE tbusuario set nome= ?, login = ?, ativo =? where id=?";
+        try (Connection con = getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setString(1, u.getNome());
+            ps.setString(2, u.getLogin());
+            ps.setBoolean(3, u.isAtivo());
+            ps.setInt(4, u.getId());
             ps.executeUpdate();  //mexe, modifica os objetos
         }
     }
 
     @Override
     public void remover(int id) throws SQLException {
-         String sql = "DELETE FROM tbusuario WHERE id=?";
-        try(Connection con = getConnection(); PreparedStatement ps = con.prepareStatement(sql)){
+        String sql = "DELETE FROM tbusuario WHERE id=?";
+        try (Connection con = getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, id);
             ps.executeUpdate();
         }
     }
-    public Usuario autenticar(String login, String senha) throws SQLException {
-        String sql = "SELECT login, senha FROM tbusuario WHERE login = ? AND senha = ? AND ativo = 1";
+
+     public Usuario autenticar(String login, String senha) throws SQLException {
+        String sql = "SELECT id, login, senha, nome, ativo FROM tbusuario WHERE login = ? AND ativo = 1";
         try (Connection con = getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
 
@@ -136,7 +136,10 @@ public class UsuarioDAO extends AbstractDAO implements CrudRepository<Usuario>{
         }
         return null;
     }
-      public boolean existeLogin(String login) throws SQLException {
+    /**
+     * Verifica se já existe um usuário com o login informado
+     */
+    public boolean existeLogin(String login) throws SQLException {
         String sql = "SELECT COUNT(*) FROM tbusuario WHERE login = ?";
         try (Connection con = getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
@@ -151,7 +154,3 @@ public class UsuarioDAO extends AbstractDAO implements CrudRepository<Usuario>{
         return false;
     }
 }
-
-    
-    
-
